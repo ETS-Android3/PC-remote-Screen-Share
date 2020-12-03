@@ -14,6 +14,8 @@ public class main {
 	private volatile static int receivePortnum=-1,remotePortnum;
 	private volatile static Inet4Address myIp;
 	private volatile static String myIpAdd,remoteIpAdd;
+	static volatile ObjectInputStream oRec;
+	static volatile ObjectOutputStream oSend;
 	
 	public static void main(String[] args) {
 	Scanner scan1=new Scanner(System.in);
@@ -22,24 +24,34 @@ public class main {
 			myIp=(Inet4Address)Inet4Address.getLocalHost();
 			myIpAdd=myIp.getHostAddress();
 		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			System.out.println("Unable to reach host");
+			e.printStackTrace();
 		}
 	
-		new Thread(new Runnable()
-				{
+	
+	Thread readThread=new Thread(new Runnable()
+	{
 
-					@Override
-					public void run() {
-						// TODO Auto-generated method stub
-						try {
-							receive();
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					}
-				}).start(); 
+		@Override
+		public void run() {
+			try
+			{
+				ServerSocket sRec=new ServerSocket(0); //Make a server socket with the generated Portnum
+				receivePortnum=sRec.getLocalPort();
+				Socket soRec=sRec.accept();	
+				oRec=new ObjectInputStream(soRec.getInputStream()) ;
+				while(true){}
+			}
+			catch(Exception e)
+			{
+				e.printStackTrace();
+			}
+		}
+
+	});
+	
+	
+	
+	readThread.start();
 		
 		while(receivePortnum==-1) {};
 		System.out.println("\nDesktop details:\nip:"+myIpAdd+"\nport:"+receivePortnum);
@@ -48,58 +60,53 @@ public class main {
 		System.out.println("port:");
 		remotePortnum=scan1.nextInt();
 		
-		new Thread(new Runnable() {
+		
+		Thread sendThread=new Thread(new Runnable() {
 
 			@Override
 			public void run() {
-				try {
-					send(remoteIpAdd,remotePortnum);
-				} catch (UnknownHostException e) {
-					// TODO Auto-generated catch block
+				try {	
+					Socket soSend=new Socket(remoteIpAdd,remotePortnum);
+					oSend=new ObjectOutputStream(soSend.getOutputStream());
+					while(true){}
+				} catch (Exception e) {
 					e.printStackTrace();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
+				} 
 			}
 			
-		}).start();
-			
+		});
+		
+		sendThread.start();
 	}
 	
-	public static void receive() throws IOException
+	
+	
+	
+	public static void receive() 
 	{
-		String rmessage="null";
-		ServerSocket sRec=new ServerSocket(0); //Make a server socket with the generated Portnum
-		receivePortnum=sRec.getLocalPort();
-		Socket soRec=sRec.accept();	
-		ObjectInputStream oRec=(ObjectInputStream) soRec.getInputStream();
+		
+		Object receivedObject;
 		try {
-			rmessage=(String) oRec.readObject();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			while(oRec==null) {}
+			receivedObject=oRec.readObject();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		System.out.println(rmessage);
-		oRec.close();
-		soRec.close();
-		sRec.close();
 	}
 	
 	
-	public static void send(String remoteIpAdd,int remotePortnum) throws UnknownHostException, IOException
+	
+	
+	
+	public static void send(Object o) 
 	{
-		String helloPhone="hello from desktop";
-		Socket soSend=new Socket(remoteIpAdd,remotePortnum);
-		ObjectOutputStream oSend=(ObjectOutputStream) soSend.getOutputStream();
-		oSend.writeObject(helloPhone);
-		oSend.flush();
-		oSend.close();
-		soSend.close();
+		while(oSend==null) {};
+		try {
+			oSend.writeObject(o);
+			oSend.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
-
+	
 }

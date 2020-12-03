@@ -1,0 +1,32 @@
+package test;
+
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.Enumeration;
+
+public class testClass {
+
+	public static void main(String[] args) throws SocketException {
+		 Enumeration<NetworkInterface> n = NetworkInterface.getNetworkInterfaces();
+         for (; n.hasMoreElements();)
+         {
+                 NetworkInterface e = n.nextElement();
+              //   System.out.println("Interface: " + e.getName());
+                 Enumeration<InetAddress> a = e.getInetAddresses();
+                 for (; a.hasMoreElements();)
+                 {
+                         InetAddress addr = a.nextElement();
+                        // System.out.println("  " + addr.getHostAddress());
+                         if(!addr.isLoopbackAddress())
+                         {
+                        	 System.out.println(addr.getHostAddress());
+                        	 break;
+                         }
+                       
+                 }
+         }
+
+	}
+
+}
