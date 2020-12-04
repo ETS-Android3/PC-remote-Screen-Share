@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 public class main {
 	
-	private volatile static int readStatus=1; //1=safe to read 0=blocked
+	private volatile static int readStatus=1,sendStatus=1; //1=safe   0=blocked
 	private volatile static int receivePortnum=-1,remotePortnum;
 	private volatile static Inet4Address myIp;
 	private volatile static String myIpAdd,remoteIpAdd;
@@ -73,26 +73,25 @@ public class main {
 				//	while(true){}
 				} catch (Exception e) {
 					e.printStackTrace();
+					run();
 				} 
 			}
 			
 		});
 		
 		sendThread.start();
-	
-		while(true)
+		
+		
+		
+		while(true)  
 		{
 			if(readStatus==1)
 				{
 					readStatus=0;
 					receive();
 				}
-		} 
-		///Experimental
+		}  
 		
-	///	receive();
-	///	while(scan1.nextInt()!=100) {}
-	///	receive();
 	}
 	
 	
@@ -136,19 +135,21 @@ public class main {
 	}
 	
 	
-	
-	
-	
-	public static void send(Object o) 
+	public static void send(Object o) ///Added to thread
 	{
-		while(oSend==null) {};
-		try {
-			oSend.writeObject(o);
-			oSend.flush();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				while(oSend==null) {};
+				try {
+					oSend.writeObject(o);
+					oSend.flush();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}).start();
 	}
-	
 }
 

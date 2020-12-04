@@ -1,0 +1,17 @@
+package DesktopAppPack;
+
+
+public class display{
+	display()
+	{
+		sendTest();
+	}
+	static void sendTest()
+	{
+		Double testd=new Double(1.23);
+		main.send(testd);	
+	}
+}
+                   
+    
+    
