@@ -12,9 +12,9 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-
 public class netUtils
 {
+    static volatile Byte receivedImageArray[];
     static volatile int status=0,readStatus=1;      //1=Connected 0=Not connected -1=Disconnected due to error, readStatus=1 available readStatus=0 blocked
     static volatile  double netCodes;
     public volatile static String myIp,pcIp="";
@@ -117,6 +117,10 @@ public class netUtils
                         case "java.lang.Double":
                             netCodes= (double) receivedObject;
                             Log.d("received double", String.valueOf(netCodes));
+                            break;
+                        case "[Ljava.lang.Byte;":
+                            Log.d("Display","array received");
+                            receivedImageArray= (Byte[]) receivedObject;
                             break;
                         default:
                             break;
