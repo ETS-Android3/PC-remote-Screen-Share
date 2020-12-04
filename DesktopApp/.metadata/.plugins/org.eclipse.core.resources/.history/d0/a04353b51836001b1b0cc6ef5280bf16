@@ -109,17 +109,8 @@ public class main {
 					while(oRec==null) {}
 					System.out.println("debug 1 oRec not null");
 					receivedObject=oRec.readObject();
-					switch(receivedObject.getClass().getName())
-					{
-					case "java.lang.Integer":
-						new keyboard((Integer) receivedObject);
-						break;
-					case "java.lang.String":
-						new mouse((String) receivedObject);
-						break;
-					default:
-						break;
-					}
+				//	System.out.println(receivedObject.getClass().getName());
+					System.out.println(receivedObject);
 				}
 				catch(EOFException e){
 					System.out.println("Remote has Shut down");
@@ -152,3 +143,13 @@ public class main {
 	
 }
 
+/*
+ Object receivedObject;
+		try {
+			while(oRec==null) {}
+			System.out.println("debug 1 oRec not null");
+			receivedObject=oRec.readObject();
+			System.out.println(receivedObject.getClass().getName());
+		} catch (Exception e) {
+			e.printStackTrace();
+		} */

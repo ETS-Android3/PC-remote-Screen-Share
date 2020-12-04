@@ -115,7 +115,7 @@ public class main {
 						new keyboard((Integer) receivedObject);
 						break;
 					case "java.lang.String":
-						new mouse((String) receivedObject);
+						System.out.println(receivedObject);
 						break;
 					default:
 						break;

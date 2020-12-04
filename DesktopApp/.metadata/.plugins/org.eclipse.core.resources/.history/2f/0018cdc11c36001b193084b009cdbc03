@@ -114,9 +114,6 @@ public class main {
 					case "java.lang.Integer":
 						new keyboard((Integer) receivedObject);
 						break;
-					case "java.lang.String":
-						new mouse((String) receivedObject);
-						break;
 					default:
 						break;
 					}
