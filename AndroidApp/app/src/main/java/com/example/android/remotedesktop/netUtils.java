@@ -77,8 +77,7 @@ public class netUtils
 
 
 
-    static void send(final Object o)
-    {
+    static void send(final Object o) {
       new Thread(new Runnable() {
           @Override
           public void run() {
@@ -106,4 +105,3 @@ public class netUtils
     }
 }
 
- 

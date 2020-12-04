@@ -1,6 +1,5 @@
 package DesktopAppPack;
 
-import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -11,8 +10,7 @@ import java.net.UnknownHostException;
 import java.util.Scanner;
 
 public class main {
-	
-	private volatile static int readStatus=1; //1=safe to read 0=blocked
+
 	private volatile static int receivePortnum=-1,remotePortnum;
 	private volatile static Inet4Address myIp;
 	private volatile static String myIpAdd,remoteIpAdd;
@@ -80,19 +78,23 @@ public class main {
 		
 		sendThread.start();
 	
+		///Experimental
 		while(true)
 		{
-			if(readStatus==1)
+			try {
+				if(oRec.available()!=0)
 				{
-					readStatus=0;
 					receive();
 				}
-		} 
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
 		///Experimental
-		
-	///	receive();
-	///	while(scan1.nextInt()!=100) {}
-	///	receive();
+
+	
 	}
 	
 	
@@ -111,16 +113,8 @@ public class main {
 					receivedObject=oRec.readObject();
 				//	System.out.println(receivedObject.getClass().getName());
 					System.out.println(receivedObject);
-				}
-				catch(EOFException e){
-					System.out.println("Remote has Shut down");
-					System.exit(0);
-				}
-				catch (Exception e) {
+				} catch (Exception e) {
 					e.printStackTrace();
-				}
-				finally {
-					readStatus=1;
 				}
 			}
 		}).start();

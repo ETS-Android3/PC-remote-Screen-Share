@@ -26,7 +26,8 @@ public class Keyboard extends AppCompatActivity {
                 performOp.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        netUtils.send(new KeyboardOperation(Integer.parseInt(String.valueOf(keyCode.getText()))));
+                        Integer sendInt=Integer.parseInt(String.valueOf(keyCode.getText()));
+                        netUtils.send(sendInt);
                     }
                 });
             }
@@ -36,11 +37,3 @@ public class Keyboard extends AppCompatActivity {
 
 }
 
-class KeyboardOperation implements Serializable
-{
-    int keyCode;
-    KeyboardOperation(int keyCode)
-    {
-        this.keyCode=keyCode;
-    }
-}
