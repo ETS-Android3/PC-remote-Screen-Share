@@ -21,11 +21,11 @@ public class Display extends AppCompatActivity {
         while(netUtils.receivedImageArray==null){};
         Log.d("Display","debug2");
         //unboxing Byte array
-        byte displayImageArray[]=new byte[netUtils.receivedImageArray.length];
+   /*     byte displayImageArray[]=new byte[netUtils.receivedImageArray.length];
         int i=0;
-        for(Byte b:netUtils.receivedImageArray)
-            displayImageArray[i++]=b;
-        Bitmap bmp = BitmapFactory.decodeByteArray(displayImageArray, 0, displayImageArray.length);
+        for(Byte b:netUtils.receivedImageArray) //commented
+            displayImageArray[i++]=b; */
+        Bitmap bmp = BitmapFactory.decodeByteArray(netUtils.receivedImageArray, 0, netUtils.receivedImageArray.length); //changed from disPlayImage to receivedImageArray
         displayView.setImageBitmap(bmp);
 
     }
