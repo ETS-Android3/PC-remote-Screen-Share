@@ -77,16 +77,21 @@ public class netUtils
 
 
 
-    static void send(Object o)
+    static void send(final Object o)
     {
-        while(outputStream==null){};
-        try{
-            outputStream.writeObject(o);
-            outputStream.flush();
-        }
-        catch(Exception e) {
-            e.printStackTrace();
-        }
+      new Thread(new Runnable() {
+          @Override
+          public void run() {
+              while(outputStream==null){};
+              try{
+                  outputStream.writeObject(o);
+                  outputStream.flush();
+              }
+              catch(Exception e) {
+                  e.printStackTrace();
+              }
+          }
+      }).start();
     }
 
 
@@ -100,3 +105,5 @@ public class netUtils
         }
     }
 }
+
+ 

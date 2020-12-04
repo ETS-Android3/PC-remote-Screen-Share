@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import java.io.Serializable;
+
 public class Keyboard extends AppCompatActivity {
 
     EditText keyCode;
@@ -34,7 +36,7 @@ public class Keyboard extends AppCompatActivity {
 
 }
 
-class KeyboardOperation
+class KeyboardOperation implements Serializable
 {
     int keyCode;
     KeyboardOperation(int keyCode)
