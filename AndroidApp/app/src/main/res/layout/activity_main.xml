@@ -41,6 +41,7 @@
                 android:id="@+id/tv_myIp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:padding="10dp"
                 android:text="loading..."
                 android:layout_centerHorizontal="true"/>
         </RelativeLayout>
@@ -57,6 +58,7 @@
                 android:text="port: "/>
             <TextView
                 android:id="@+id/tv_myPort"
+                android:padding="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="loading..."

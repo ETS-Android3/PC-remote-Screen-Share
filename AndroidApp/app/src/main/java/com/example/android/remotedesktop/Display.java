@@ -25,7 +25,7 @@ public class Display extends AppCompatActivity {
              Long startTime=System.currentTimeMillis();
              while(true)
              {
-                 if(System.currentTimeMillis()-startTime>1500 && netUtils.displayStatus==1)
+                 if(System.currentTimeMillis()-startTime>1000 && netUtils.displayStatus==1)
                  {
                      startTime=System.currentTimeMillis();
                      updateDisplay();
