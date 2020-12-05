@@ -20,7 +20,7 @@ public class main {
 	static volatile ObjectInputStream oRec;
 	static volatile ObjectOutputStream oSend;
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 	Scanner scan1=new Scanner(System.in);
 	try {
 			//gets the LAN address of pc
@@ -42,7 +42,50 @@ public class main {
 				receivePortnum=sRec.getLocalPort();
 				Socket soRec=sRec.accept();	
 				oRec=new ObjectInputStream(soRec.getInputStream());
-			//	while(true){}
+				System.out.println("Handshake success");
+				while(true)  
+				{
+					if(readStatus==1){
+							readStatus=0;
+							try {
+								Object receivedObject;
+								while(oRec==null) {}
+								//	System.out.println("debug 1 oRec not null");
+									receivedObject=oRec.readObject();
+									readStatus=1;
+								switch(receivedObject.getClass().getName())
+								{
+								case "java.lang.Integer":
+									new keyboard((Integer) receivedObject);
+									break;
+								case "java.lang.String":
+									new mouse((String) receivedObject);
+									break;
+								case "java.lang.Double":
+									if((Double)receivedObject==50.0)
+										new display();
+									break;
+								case "java.lang.Character":
+									System.out.println(receivedObject);
+									break;
+								default:
+									break;
+								}
+							}
+							catch(StreamCorruptedException e) {
+								System.out.println("Connection corrupted, please restart");
+								System.exit(0);
+							}
+							catch(EOFException e){
+								System.out.println("Remote has Shut down");
+								System.exit(0);
+							}
+							catch (Exception e) {
+								System.out.println("An issue was encountered with the connection, service stopped.");
+								System.exit(0);
+							}
+						}
+				} 
 			}
 			catch(Exception e)
 			{
@@ -82,64 +125,10 @@ public class main {
 		
 		sendThread.start();
 		
-		
-		
-		while(true)  
-		{
-			if(readStatus==1)
-				{
-					readStatus=0;
-					receive();
-				}
-		}  
+		 
 		
 	}
 	
-	
-	
-	
-	public static void receive() 
-	{
-		new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				Object receivedObject;
-				try {
-					while(oRec==null) {}
-					System.out.println("debug 1 oRec not null");
-					receivedObject=oRec.readObject();
-					readStatus=1;
-					switch(receivedObject.getClass().getName())
-					{
-					case "java.lang.Integer":
-						new keyboard((Integer) receivedObject);
-						break;
-					case "java.lang.String":
-						new mouse((String) receivedObject);
-						break;
-					case "java.lang.Double":
-						if((Double)receivedObject==50.0)
-							new display();
-						break;
-					default:
-						break;
-					}
-				}
-				catch(EOFException e){
-					System.out.println("Remote has Shut down");
-					System.exit(0);
-				}
-				catch (Exception e) {
-					e.printStackTrace();
-					readStatus=0;
-				}
-				finally {
-				//	readStatus=1;
-				}
-			}
-		}).start();
-	}
 	
 	
 	public static void send(Object o) ///Added to thread
@@ -150,11 +139,20 @@ public class main {
 			public void run() {
 				while(oSend==null) {};
 				try {
-					oSend.writeObject(o);
-					oSend.flush();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+						oSend.writeObject(o);
+						oSend.flush();
+					} 
+					catch(IndexOutOfBoundsException e) {
+						try {
+							oSend.reset();
+						} catch (IOException e1) {
+							System.out.println(e1.getMessage());
+						}
+						System.out.println("Error sending, attempting reset");
+					}
+				 catch (IOException e) {
+					System.out.println(e.getMessage());
+				} 
 			}
 		}).start();
 	}

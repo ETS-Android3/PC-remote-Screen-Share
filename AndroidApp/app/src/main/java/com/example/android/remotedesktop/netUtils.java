@@ -15,7 +15,7 @@ import java.net.Socket;
 public class netUtils
 {
     static volatile byte receivedImageArray[];  //type changed from Byte to byte
-    static volatile int status=0,readStatus=1,displayStatus=1;      //1=Connected 0=Not connected -1=Disconnected due to error, readStatus=1 available readStatus=0 blocked
+    static volatile int status=0,displayStatus=1;      //1=Connected 0=Not connected -1=Disconnected due to error, readStatus=1 available readStatus=0 blocked
     static volatile  double netCodes;
     public volatile static String myIp,pcIp="";
     static volatile int receivePort,sendPort=0;
@@ -39,11 +39,35 @@ public class netUtils
                     rSocket=phoneServ.accept(); //accept incoming request, establish connection
                     inputStream= new ObjectInputStream(rSocket.getInputStream());
                     //listener part
+                    int readStatus = 1;
                     while(true)
                     {
                         if(readStatus==1) {
                             readStatus = 0;
-                            receive();
+                            Object receivedObject;
+                            try {
+                                while(inputStream==null){}
+                                Log.d("readStatus", String.valueOf(readStatus));
+                                receivedObject=inputStream.readObject();
+                                readStatus=1;
+                                switch (receivedObject.getClass().getName())
+                                {
+                                    case "java.lang.Double":
+                                        netCodes= (double) receivedObject;
+                                        Log.d("received double", String.valueOf(netCodes));
+                                        break;
+                                    case "[B":
+                                        Log.d("Display","array received");
+                                        receivedImageArray= (byte[]) receivedObject;
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            } catch (EOFException e) {
+                                e.printStackTrace();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }
@@ -60,7 +84,6 @@ public class netUtils
             @Override
             public void run() {
                 //sender part
-                Log.d("sendThread","started");
                 while(pcIp.length()==0 && sendPort==0){};
                 try {
                     Log.d("sendThread",pcIp+" "+sendPort);
@@ -91,9 +114,9 @@ public class netUtils
           public void run() {
               while(outputStream==null){};
               try{
-                  outputStream.writeObject(o);
-                  outputStream.flush();
-              }
+                      outputStream.writeObject(o);
+                      outputStream.flush();
+                  }
               catch(Exception e) {
                   e.printStackTrace();
               }
@@ -102,7 +125,7 @@ public class netUtils
     }
 
 
-    static void receive() {
+   /* static void receive() {
         new Thread(new Runnable() {
             @Override
 
@@ -112,6 +135,7 @@ public class netUtils
                     while(inputStream==null){}
                     Log.d("readStatus", String.valueOf(readStatus));
                     receivedObject=inputStream.readObject();
+                    readStatus=1;
                     switch (receivedObject.getClass().getName())
                     {
                         case "java.lang.Double":
@@ -131,12 +155,12 @@ public class netUtils
                     e.printStackTrace();
                 }
                 finally {
-                    readStatus=1;
+                  //  readStatus=1;
                 }
             }
         }).start();
 
-    }
+    } */
 }
 
 
