@@ -6,27 +6,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Mouse">
-    <EditText
-        android:id="@+id/ed_xcood"
+    <ImageView
+        android:id="@+id/mousePad"
+        android:layout_centerInParent="true"
+        android:layout_width="1280px"
+        android:layout_height="720px"
+        android:background="@drawable/mouseborder"/>
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="100dp"/>
-
-    <EditText
-        android:id="@+id/ed_ycood"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="100dp"
-        android:layout_alignParentRight="true"/>
-
-    <Button
-        android:id="@+id/btn_msOperation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/ed_xcood"
-        android:layout_centerHorizontal="true"
-        android:text="submit"/>
+        android:text="Touch to simulate mouse movement"
+        android:textColor="#FF0000"
+        android:layout_centerInParent="true"/>
 
 </RelativeLayout>

@@ -3,29 +3,32 @@ package com.example.android.remotedesktop;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 public class Mouse extends AppCompatActivity {
 
-    EditText xcood,ycood;
-    Button msOp;
-    String send;
 
+    ImageView mousePad;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mouse);
-        xcood=(EditText)findViewById(R.id.ed_xcood);
-        ycood=(EditText)findViewById(R.id.ed_ycood);
-        msOp=(Button)findViewById(R.id.btn_msOperation);
-        msOp.setOnClickListener(new View.OnClickListener() {
+        mousePad=findViewById(R.id.mousePad);
+        mousePad.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                send="x="+String.valueOf(xcood.getText())+"&"+"y="+String.valueOf(ycood.getText());
+            public boolean onTouch(View v, MotionEvent event) {
+                int x=(int)event.getX();
+                int y=(int)event.getY();
+                String send="x="+x+"&y="+y;
                 netUtils.send(send);
+                return true;
             }
         });
     }
+
+
 }
