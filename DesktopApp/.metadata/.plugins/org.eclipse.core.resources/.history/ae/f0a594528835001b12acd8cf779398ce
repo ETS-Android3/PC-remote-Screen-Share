@@ -1,0 +1,43 @@
+package DesktopAppPack;
+import java.awt.AWTException;
+import java.awt.Canvas;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.Rectangle;
+import java.awt.Robot;
+import java.awt.Toolkit;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+
+public class display  {
+	public static void main(String[] args) throws AWTException, IOException
+	{
+	        JFrame f=new JFrame();  //outside loop
+			Robot captureRobot=new Robot();   //outside loop
+			Rectangle captureArea=new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()); //outside loop
+	        f.setVisible(true); //might not be correct place
+		    JLabel picLabel = new JLabel(new ImageIcon("testImage.png")); //outside loop
+			f.add(picLabel);
+			f.setSize(400,400);
+			
+	        int i=0;
+		while(true)	
+		{	   i++;
+	           picLabel.setIcon(new ImageIcon("testImage.png"));
+	           picLabel.updateUI();
+			   BufferedImage Image = captureRobot.createScreenCapture(captureArea);        //inside loop
+	           ImageIO.write(Image, "PNG", new File("testImage.png"));                    //inside loop
+	           System.out.println(i);
+		}
+	}
+}
+
+    
+    
