@@ -4,7 +4,6 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.StreamCorruptedException;
 import java.net.Inet4Address;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -41,7 +40,7 @@ public class main {
 				ServerSocket sRec=new ServerSocket(0); //Make a server socket with the generated Portnum
 				receivePortnum=sRec.getLocalPort();
 				Socket soRec=sRec.accept();	
-				oRec=new ObjectInputStream(soRec.getInputStream());
+				oRec=new ObjectInputStream(soRec.getInputStream()) ;
 			//	while(true){}
 			}
 			catch(Exception e)

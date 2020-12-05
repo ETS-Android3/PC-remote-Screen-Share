@@ -41,7 +41,7 @@ public class main {
 				ServerSocket sRec=new ServerSocket(0); //Make a server socket with the generated Portnum
 				receivePortnum=sRec.getLocalPort();
 				Socket soRec=sRec.accept();	
-				oRec=new ObjectInputStream(soRec.getInputStream());
+				oRec=new ObjectInputStream(soRec.getInputStream()) ;
 			//	while(true){}
 			}
 			catch(Exception e)
@@ -124,6 +124,16 @@ public class main {
 						break;
 					default:
 						break;
+					}
+				}
+				catch(StreamCorruptedException e) {
+					System.out.println("Stream Corrupted, attempting to reset");
+					try {
+						oRec.reset();
+						readStatus=1;
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
 					}
 				}
 				catch(EOFException e){

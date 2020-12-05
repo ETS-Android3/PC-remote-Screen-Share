@@ -42,16 +42,22 @@ public class MainActivity extends AppCompatActivity {
         pcIP=(EditText)findViewById(R.id.tv_pcIp);
         pcPort=(EditText)findViewById(R.id.tv_pcPort);
         while(netUtils.receivePort==0){}; //WARNING! Blocks main thread
+        if(netUtils.myIp.startsWith("0"))
+            netUtils.myIp="192.168.43.1";
         myIp.setText(netUtils.myIp);
         myPort.setText(String.valueOf(netUtils.receivePort));
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                netUtils.pcIp=String.valueOf(pcIP.getText());
-                netUtils.sendPort=Integer.parseInt(String.valueOf(pcPort.getText()));
+                if(pcIP.length()!=0)
+                    netUtils.pcIp=String.valueOf(pcIP.getText());
+                if(pcPort.length()!=0)
+                    netUtils.sendPort=Integer.parseInt(String.valueOf(pcPort.getText()));
                 Intent i=new Intent(MainActivity.this,SelectRemote.class);
-                startActivity(i);
-
+                if(pcIP.length()==0 || pcPort.length()==0)
+                    Toast.makeText(MainActivity.this,"Enter PC details",Toast.LENGTH_SHORT).show();
+                else
+                    startActivity(i);
             }
         });
     }

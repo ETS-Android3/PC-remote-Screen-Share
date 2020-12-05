@@ -15,7 +15,7 @@ import java.net.Socket;
 public class netUtils
 {
     static volatile byte receivedImageArray[];  //type changed from Byte to byte
-    static volatile int status=0,readStatus=1;      //1=Connected 0=Not connected -1=Disconnected due to error, readStatus=1 available readStatus=0 blocked
+    static volatile int status=0,readStatus=1,displayStatus=1;      //1=Connected 0=Not connected -1=Disconnected due to error, readStatus=1 available readStatus=0 blocked
     static volatile  double netCodes;
     public volatile static String myIp,pcIp="";
     static volatile int receivePort,sendPort=0;

@@ -41,7 +41,7 @@ public class main {
 				ServerSocket sRec=new ServerSocket(0); //Make a server socket with the generated Portnum
 				receivePortnum=sRec.getLocalPort();
 				Socket soRec=sRec.accept();	
-				oRec=new ObjectInputStream(soRec.getInputStream());
+				oRec=new ObjectInputStream(soRec.getInputStream()) ;
 			//	while(true){}
 			}
 			catch(Exception e)

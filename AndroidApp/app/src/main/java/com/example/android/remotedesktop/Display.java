@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 
 public class Display extends AppCompatActivity {
@@ -16,19 +17,41 @@ public class Display extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display);
         displayView=(ImageView)findViewById(R.id.iv_display);
+
+     updateDisplay();
+     new Thread(new Runnable() {
+         @Override
+         public void run() {
+             Long startTime=System.currentTimeMillis();
+             while(true)
+             {
+                 if(System.currentTimeMillis()-startTime>1000 && netUtils.displayStatus==1)
+                 {
+                     startTime=System.currentTimeMillis();
+                     updateDisplay();
+                 }
+             }
+         }
+     }).start();
+    }
+
+    void updateDisplay()
+    {
         netUtils.send(new Double(50.0)); //send code 50
-        Log.d("Display","debug1");
         while(netUtils.receivedImageArray==null){};
-        Log.d("Display","debug2");
-        //unboxing Byte array
-   /*     byte displayImageArray[]=new byte[netUtils.receivedImageArray.length];
-        int i=0;
-        for(Byte b:netUtils.receivedImageArray) //commented
-            displayImageArray[i++]=b; */
         Bitmap bmp = BitmapFactory.decodeByteArray(netUtils.receivedImageArray, 0, netUtils.receivedImageArray.length); //changed from disPlayImage to receivedImageArray
         displayView.setImageBitmap(bmp);
-
     }
-    
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        netUtils.displayStatus=1;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        netUtils.displayStatus=0;
+    }
 }
