@@ -3,6 +3,8 @@ package com.example.android.remotedesktop;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,10 +19,8 @@ public class Keyboard extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_keyboard);
-        keyCode=(EditText)findViewById(R.id.et_KeyCode);
-        performOp=(Button)findViewById(R.id.btn_kbOperation);
 
-        Thread t=new Thread(new Runnable() {
+      /*  Thread t=new Thread(new Runnable() {
             @Override
             public void run() {
                 performOp.setOnClickListener(new View.OnClickListener() {
@@ -32,9 +32,8 @@ public class Keyboard extends AppCompatActivity  {
                 });
             }
         });
-        t.start();
+        t.start(); */
     }
-
 
 }
 

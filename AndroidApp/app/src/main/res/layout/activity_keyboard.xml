@@ -5,19 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Keyboard">
-    <EditText
-        android:id="@+id/et_KeyCode"
-        android:layout_width="wrap_content"
+
+    <com.example.android.remotedesktop.MyKeyboard
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"/>
-    <Button
-        android:id="@+id/btn_kbOperation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:inputType="number"
-        android:text="submit"
-        android:layout_below="@id/et_KeyCode"/>
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>
