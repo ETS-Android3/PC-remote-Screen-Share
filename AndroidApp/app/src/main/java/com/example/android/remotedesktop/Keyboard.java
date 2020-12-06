@@ -20,19 +20,6 @@ public class Keyboard extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_keyboard);
 
-      /*  Thread t=new Thread(new Runnable() {
-            @Override
-            public void run() {
-                performOp.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Integer sendInt=Integer.parseInt(String.valueOf(keyCode.getText()));
-                        netUtils.send(sendInt);
-                    }
-                });
-            }
-        });
-        t.start(); */
     }
 
 }
