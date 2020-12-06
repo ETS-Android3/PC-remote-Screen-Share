@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
 
 public class Display extends AppCompatActivity {
@@ -37,7 +36,10 @@ public class Display extends AppCompatActivity {
 
     void updateDisplay()
     {
-        netUtils.send(new Double(50.0)); //send code 50
+        while(netUtils.sendStatus!=1){}
+        netUtils.sendObject=new Double(50.0);
+    //    Log.d("Sendingrequest","code 50");
+        netUtils.sendStatus=0;
         while(netUtils.receivedImageArray==null){};
         Bitmap bmp = BitmapFactory.decodeByteArray(netUtils.receivedImageArray, 0, netUtils.receivedImageArray.length); //changed from disPlayImage to receivedImageArray
         displayView.setImageBitmap(bmp);

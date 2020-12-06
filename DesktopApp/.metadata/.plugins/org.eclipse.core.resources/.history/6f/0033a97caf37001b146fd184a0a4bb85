@@ -19,13 +19,15 @@ public class display{
 			ByteArrayOutputStream bStream=new ByteArrayOutputStream();
 			ImageIO.write(screenBufferImage,"JPG", bStream);
 			byte[] tempArray=bStream.toByteArray();
-			while(main.sendStatus!=1) //changed from finalArray to tempArray
-			{}
-			main.sendObject=tempArray;
-			main.sendStatus=0;
+			sendTest(tempArray);  //changed from finalArray to tempArray
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+	}
+	static void sendTest(Object o)
+	{
+		main.send(o);	
 	}
 }
                    

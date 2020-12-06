@@ -11,6 +11,7 @@ public class keyboard {
 			kbRobot.keyPress(keyCode);
 			kbRobot.keyRelease(keyCode);
 		} catch (AWTException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

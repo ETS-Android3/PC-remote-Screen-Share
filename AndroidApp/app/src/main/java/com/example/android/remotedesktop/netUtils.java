@@ -3,7 +3,6 @@ package com.example.android.remotedesktop;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.io.EOFException;
 import java.io.IOException;
@@ -14,8 +13,9 @@ import java.net.Socket;
 
 public class netUtils
 {
+    static volatile Object sendObject;
     static volatile byte receivedImageArray[];  //type changed from Byte to byte
-    static volatile int status=0,displayStatus=1;      //1=Connected 0=Not connected -1=Disconnected due to error, readStatus=1 available readStatus=0 blocked
+    static volatile int status=0,displayStatus=1,sendStatus=1;      //1=Connected 0=Not connected -1=Disconnected due to error, readStatus=1 available readStatus=0 blocked
     static volatile  double netCodes;
     public volatile static String myIp,pcIp="";
     static volatile int receivePort,sendPort=0;
@@ -90,6 +90,15 @@ public class netUtils
                     sSocket=new Socket(pcIp,sendPort);
                     outputStream= new ObjectOutputStream(sSocket.getOutputStream());
                     status=1;
+                    while (true)
+                    {
+                        if(sendStatus==0)
+                        {
+                            outputStream.writeObject(sendObject);
+                            outputStream.flush();
+                            sendStatus=1;
+                        }
+                    }
                 } catch (Exception e) {
                     Log.d("sendThread",e.getMessage());
                     pcIp="";
@@ -97,7 +106,6 @@ public class netUtils
                     status=-1;
                     run();
                 }
-                //sender part
             }
          });
 
@@ -105,62 +113,6 @@ public class netUtils
         send.start();
 
     }
-
-
-
-    static void send(final Object o) {
-      new Thread(new Runnable() {
-          @Override
-          public void run() {
-              while(outputStream==null){};
-              try{
-                      outputStream.writeObject(o);
-                      outputStream.flush();
-                  }
-              catch(Exception e) {
-                  e.printStackTrace();
-              }
-          }
-      }).start();
-    }
-
-
-   /* static void receive() {
-        new Thread(new Runnable() {
-            @Override
-
-            public void run() {
-                Object receivedObject;
-                try {
-                    while(inputStream==null){}
-                    Log.d("readStatus", String.valueOf(readStatus));
-                    receivedObject=inputStream.readObject();
-                    readStatus=1;
-                    switch (receivedObject.getClass().getName())
-                    {
-                        case "java.lang.Double":
-                            netCodes= (double) receivedObject;
-                            Log.d("received double", String.valueOf(netCodes));
-                            break;
-                        case "[B":
-                            Log.d("Display","array received");
-                            receivedImageArray= (byte[]) receivedObject;
-                            break;
-                        default:
-                            break;
-                    }
-                } catch (EOFException e) {
-                    e.printStackTrace();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                finally {
-                  //  readStatus=1;
-                }
-            }
-        }).start();
-
-    } */
 }
 
 

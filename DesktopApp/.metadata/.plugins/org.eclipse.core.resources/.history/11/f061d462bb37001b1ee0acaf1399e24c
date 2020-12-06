@@ -19,6 +19,7 @@ public class mouse {
 		else 
 			mouseRobot.mouseMove(Integer.valueOf(numbers[0]),Integer.valueOf(numbers[1]));
 	} catch (AWTException e) {
+		// TODO Auto-generated catch block
 		e.printStackTrace();
 	}
 	}
