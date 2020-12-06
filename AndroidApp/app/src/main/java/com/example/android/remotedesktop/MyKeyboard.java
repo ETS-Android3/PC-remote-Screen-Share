@@ -1,7 +1,6 @@
 package com.example.android.remotedesktop;
 
 import android.content.Context;
-import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.SparseArray;
@@ -9,10 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 
 public class MyKeyboard extends LinearLayout implements View.OnClickListener {
 
@@ -240,7 +237,9 @@ public class MyKeyboard extends LinearLayout implements View.OnClickListener {
         Button btn=(Button) v;
         Integer sendInt=keyCodes.get(v.getId());
         Log.d("pressed", String.valueOf(sendInt));
-        netUtils.send(sendInt);
+        while(netUtils.sendStatus!=1){}
+        netUtils.sendObject=sendInt;
+        netUtils.sendStatus=0;
     }
 }
 
