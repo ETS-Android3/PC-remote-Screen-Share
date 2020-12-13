@@ -15,7 +15,7 @@ public class netUtils
 {
     static volatile Object sendObject;
     static volatile byte receivedImageArray[];  //type changed from Byte to byte
-    static volatile int status=0,displayStatus=1,sendStatus=1;      //1=Connected 0=Not connected -1=Disconnected due to error, readStatus=1 available readStatus=0 blocked
+    static volatile int status=0,displayStatus=1,sendStatus=1,readStatus = 1;      //1=Connected 0=Not connected -1=Disconnected due to error, readStatus=1 available readStatus=0 blocked
     static volatile  double netCodes;
     public volatile static String myIp,pcIp="";
     static volatile int receivePort,sendPort=0;
@@ -39,7 +39,6 @@ public class netUtils
                     rSocket=phoneServ.accept(); //accept incoming request, establish connection
                     inputStream= new ObjectInputStream(rSocket.getInputStream());
                     //listener part
-                    int readStatus = 1;
                     while(true)
                     {
                         if(readStatus==1) {
@@ -47,7 +46,7 @@ public class netUtils
                             Object receivedObject;
                             try {
                                 while(inputStream==null){}
-                                Log.d("readStatus", String.valueOf(readStatus));
+                           //     Log.d("readStatus", String.valueOf(readStatus));
                                 receivedObject=inputStream.readObject();
                                 readStatus=1;
                                 switch (receivedObject.getClass().getName())
@@ -57,7 +56,7 @@ public class netUtils
                                         Log.d("received double", String.valueOf(netCodes));
                                         break;
                                     case "[B":
-                                        Log.d("Display","array received");
+                                      //  Log.d("Display","array received");
                                         receivedImageArray= (byte[]) receivedObject;
                                         break;
                                     default:
@@ -66,6 +65,7 @@ public class netUtils
                             } catch (EOFException e) {
                                 e.printStackTrace();
                             } catch (Exception e) {
+                                status=-1;
                                 e.printStackTrace();
                             }
                         }

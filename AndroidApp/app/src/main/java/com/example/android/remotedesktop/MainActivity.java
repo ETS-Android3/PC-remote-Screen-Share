@@ -49,12 +49,12 @@ public class MainActivity extends AppCompatActivity {
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(pcIP.length()!=0)
+                if(pcIP.length()>1)
                     netUtils.pcIp=String.valueOf(pcIP.getText());
-                if(pcPort.length()!=0)
+                if(pcPort.length()>1)
                     netUtils.sendPort=Integer.parseInt(String.valueOf(pcPort.getText()));
                 Intent i=new Intent(MainActivity.this,SelectRemote.class);
-                if(pcIP.length()==0 || pcPort.length()==0)
+                if(pcIP.length()<=1 || pcPort.length()<=1)
                     Toast.makeText(MainActivity.this,"Enter PC details",Toast.LENGTH_SHORT).show();
                 else
                     startActivity(i);
@@ -66,6 +66,19 @@ public class MainActivity extends AppCompatActivity {
     protected void onRestart() {
         super.onRestart();
         if(netUtils.status==-1)
+        {
             Toast.makeText(MainActivity.this,"Host Unreachable",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"App will shutdown in 3 seconds",Toast.LENGTH_SHORT).show();
+            new Thread(new Runnable() {
+                Long starttime=System.currentTimeMillis();
+                @Override
+                public void run() {
+                    while(true){
+                        if(System.currentTimeMillis()-starttime>5000)
+                            System.exit(0);
+                    }
+                }
+            }).start();
+        }
     }
 }

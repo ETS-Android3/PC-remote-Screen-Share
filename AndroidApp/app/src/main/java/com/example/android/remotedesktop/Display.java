@@ -7,6 +7,9 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import java.io.IOException;
 
 public class Display extends AppCompatActivity {
 
@@ -16,15 +19,26 @@ public class Display extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display);
         displayView=(ImageView)findViewById(R.id.iv_display);
+        this.getSupportActionBar().hide(); //hide action bar
+        Thread networkMonitor=new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(true){
+                    if(netUtils.status==-1)
+                        finish();
+                }
+            }
+        });
+        networkMonitor.start();
 
-     updateDisplay();
+        updateDisplay();
      new Thread(new Runnable() {
          @Override
          public void run() {
              Long startTime=System.currentTimeMillis();
              while(true)
              {
-                 if(System.currentTimeMillis()-startTime>1000 && netUtils.displayStatus==1)
+                 if(System.currentTimeMillis()-startTime>500 && netUtils.displayStatus==1)
                  {
                      startTime=System.currentTimeMillis();
                      updateDisplay();
@@ -40,9 +54,14 @@ public class Display extends AppCompatActivity {
         netUtils.sendObject=new Double(50.0);
     //    Log.d("Sendingrequest","code 50");
         netUtils.sendStatus=0;
-        while(netUtils.receivedImageArray==null){};
-        Bitmap bmp = BitmapFactory.decodeByteArray(netUtils.receivedImageArray, 0, netUtils.receivedImageArray.length); //changed from disPlayImage to receivedImageArray
-        displayView.setImageBitmap(bmp);
+        if(netUtils.receivedImageArray==null)
+        {
+            finish();
+        }
+        else{
+            Bitmap bmp = BitmapFactory.decodeByteArray(netUtils.receivedImageArray, 0, netUtils.receivedImageArray.length); //changed from disPlayImage to receivedImageArray
+            displayView.setImageBitmap(bmp);
+        }
     }
 
     @Override

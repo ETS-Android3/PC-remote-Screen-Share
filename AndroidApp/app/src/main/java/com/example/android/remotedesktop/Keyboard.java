@@ -19,20 +19,17 @@ public class Keyboard extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_keyboard);
-
-      /*  Thread t=new Thread(new Runnable() {
+        Thread networkMonitor=new Thread(new Runnable() {
             @Override
             public void run() {
-                performOp.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Integer sendInt=Integer.parseInt(String.valueOf(keyCode.getText()));
-                        netUtils.send(sendInt);
-                    }
-                });
+                while(true){
+                    if(netUtils.status==-1)
+                        finish();
+                }
             }
         });
-        t.start(); */
+        networkMonitor.start();
+
     }
 
 }
