@@ -65,7 +65,7 @@ public class main {
 								case "java.lang.Double":
 									if((Double)receivedObject==50.0)
 										new display();
-									System.out.println("Code 50 received");
+								//	System.out.println("Code 50 received");
 									break;
 								case "java.lang.Character":
 									System.out.println(receivedObject);

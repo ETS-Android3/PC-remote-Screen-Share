@@ -18,6 +18,16 @@ public class SelectRemote extends AppCompatActivity {
         mouse=(RelativeLayout)findViewById(R.id.btn_mouse);
         keyboard=(RelativeLayout)findViewById(R.id.btn_keyboard);
         display=(RelativeLayout)findViewById(R.id.btn_display);
+        Thread networkMonitor=new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(true){
+                    if(netUtils.status==-1)
+                        finish();
+                }
+            }
+        });
+        networkMonitor.start();
 
         mouse.setOnClickListener(new View.OnClickListener() {
             @Override

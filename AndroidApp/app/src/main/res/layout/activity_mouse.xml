@@ -23,8 +23,18 @@
         android:layout_below="@id/mousePad"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="click"
-        android:layout_centerHorizontal="true"/>
+        android:text="Lclick"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="80dp"/>
+
+    <Button
+        android:id="@+id/Rclick"
+        android:layout_below="@id/mousePad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rclick"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="80dp"/>
 
 
 </RelativeLayout>

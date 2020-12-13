@@ -19,8 +19,19 @@ public class Display extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display);
         displayView=(ImageView)findViewById(R.id.iv_display);
+        this.getSupportActionBar().hide(); //hide action bar
+        Thread networkMonitor=new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(true){
+                    if(netUtils.status==-1)
+                        finish();
+                }
+            }
+        });
+        networkMonitor.start();
 
-     updateDisplay();
+        updateDisplay();
      new Thread(new Runnable() {
          @Override
          public void run() {

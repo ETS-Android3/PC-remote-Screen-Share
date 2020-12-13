@@ -65,6 +65,7 @@ public class netUtils
                             } catch (EOFException e) {
                                 e.printStackTrace();
                             } catch (Exception e) {
+                                status=-1;
                                 e.printStackTrace();
                             }
                         }
