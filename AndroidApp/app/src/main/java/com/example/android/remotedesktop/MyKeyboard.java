@@ -1,3 +1,8 @@
+/**
+ * @author Sanat
+ * The MyKeyboard class will handle touch events on the Android custom keyboard and
+ * shall send respective keycodes to the PC
+ */
 package com.example.android.remotedesktop;
 
 import android.content.Context;
@@ -11,6 +16,7 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
 
+//Extend from the LinearLayout and implement OnClickListener interface
 public class MyKeyboard extends LinearLayout implements View.OnClickListener {
 
     private Button num0;
@@ -62,8 +68,13 @@ public class MyKeyboard extends LinearLayout implements View.OnClickListener {
     private Button alphadel;
     private Button alphaenter;
 
+    /**
+     * Use SparseArray to map buttons ids to their keycodes
+     * SpareArray is efficient on memory in comparison to HashMap
+     */
     SparseArray<Integer> keyCodes=new SparseArray<Integer>();
 
+    //Mandatory Constructors
     public MyKeyboard(Context context) {
         super(context);
         init(context,null);
@@ -81,6 +92,7 @@ public class MyKeyboard extends LinearLayout implements View.OnClickListener {
 
     public void init(Context context,AttributeSet attrs)
     {
+        //Inflate the layout (create objects of views from keyboard.xml file)
         LayoutInflater.from(context).inflate(R.layout.keyboard,this,true);
         num1=(Button)findViewById(R.id.btn_1);
         num2=(Button)findViewById(R.id.btn_2);
@@ -131,6 +143,7 @@ public class MyKeyboard extends LinearLayout implements View.OnClickListener {
         alphadel=(Button)findViewById(R.id.btn_del);
         alphaenter=(Button)findViewById(R.id.btn_ent);
 
+        //Set onClickListener for every button
         num1.setOnClickListener(this);
         num2.setOnClickListener(this);
         num3.setOnClickListener(this);
@@ -181,6 +194,7 @@ public class MyKeyboard extends LinearLayout implements View.OnClickListener {
         alphaenter.setOnClickListener(this);
         alphaslash.setOnClickListener(this);
 
+        //Assign keycodes to the buttons
         keyCodes.put(R.id.btn_0,48);
         keyCodes.put(R.id.btn_1,49);
         keyCodes.put(R.id.btn_2,50);
@@ -234,9 +248,8 @@ public class MyKeyboard extends LinearLayout implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        Button btn=(Button) v;
-        Integer sendInt=keyCodes.get(v.getId());
-        Log.d("pressed", String.valueOf(sendInt));
+        Integer sendInt=keyCodes.get(v.getId()); //get keycode for the pressed key
+        Log.d("MyKeyboard pressed: ", String.valueOf(sendInt));
         while(netUtils.sendStatus!=1){}
         netUtils.sendObject=sendInt;
         netUtils.sendStatus=0;
